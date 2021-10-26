@@ -1,0 +1,55 @@
+Erich V. 
+
+Dru W. 
+
+Nathan M. 
+
+ 
+
+Name your tasks - try for better names than task_1, task_2, etc. but do not spend more than ten minutes on this. 
+
+ADC_read(), threshold_compare(), play_sound(), change_sound(), sleepytime(). 
+
+ 
+
+Name the peripherals each task will use. (Don't say "three IO pins." Say "GPIO-PB8", or "SPI1, using PA 5,...") 
+
+ADC using PA0, PA1, and PA5. DAC using PA4 
+ 
+
+Name all the files that you know you'll use today You can add more later. 
+
+Threshold.c, init_everything.c, ADC_read.c, main.c 
+
+ 
+
+If two people are working on the same task, then y'all must write the "prototype" declarations today so that you two or three can share them without compiler errors. 
+
+N/A All working on separate tasks 
+
+ 
+
+Write a header comment for at each task function: WHAT IS IT FOR? (The "responsibility" it fulfills.) 
+
+ADC_read() reads the sensor because I can’t read, puts into queue for other tasks. Returns because, “I 	gotta go fast” -Ricky Bobby 
+
+threshold_compare() outputs a value dependent upon the ADC’s output. The more zappier the higher 	the output value. Then determines whether the voltage spike is rising or falling and if a sound 	should be played 
+
+play_sound() - while device is moving, pull a queued sound file, send to DAC output to play on speaker. 
+
+change_sound() - rotates through statemachine to pick sound file to use 
+
+Sleepytime() - restructures the schedule, and puts into sleep mode, waits till the queue is empty to only 	play one sound per flight 
+ 
+
+Name your queues -- and if you have any, name your semaphores and guarded buffers. 
+Yeet_queue, killer, highest 
+
+Add carrolls@trine.edu to Settings/Manage Access so that I can see your code. 
+
+Get coding! Do not commit to Master (or Trunk) until you have ensured that your code builds and runs.  
+ 
+
+Do aim to commit at least once before you've spent six hours of coding work. If you can't do that, ask for help. If you can't get help, CREATE A BRANCH "broken-dream-4" and CHECKOUT that branch; commit the broken code there, with a commit message on the error you cannot fix. YOU MUST STOP PROGRESSING TO KILL BUGS about every three or four hours! 
+
+ 
