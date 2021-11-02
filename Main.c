@@ -9,7 +9,7 @@
 //function calls (update as needed)
 
 //TODO: ADC_read fnc and its trigger (DRU)
-extern void ADC_read(void);
+extern void ACC_read(void);
 //TODO: threshold_compare fnc and trigger
 extern trigger_2();
 extern void threshold_compare(void);
@@ -34,7 +34,7 @@ int main(void)
 	while(1)
 	{
 		
-		if(trigger_1()){ADC_read();}
+		if(trigger_1()){ACC_read();}
 		if(trigger_2()){threshold_compare();}   // semaphore for compare value
 		if(trigger_3()){play_sound();}          // also determines how loud
 		if(trigger_4()){change_sound();}
