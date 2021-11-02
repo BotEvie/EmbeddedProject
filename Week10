@@ -14,7 +14,7 @@ ADC_read(), threshold_compare(), play_sound(), change_sound(), sleepytime().
 
 Name the peripherals each task will use. (Don't say "three IO pins." Say "GPIO-PB8", or "SPI1, using PA 5,...") 
 
-ADC using PA0, PA1, and PA5. DAC using PA4 
+SPI2 using PB12 nss, PB13 sck, PB14 MISO, PB15 MOSI. DAC using PA4 
  
 
 Name all the files that you know you'll use today You can add more later. 
