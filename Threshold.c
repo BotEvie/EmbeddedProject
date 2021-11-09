@@ -6,12 +6,12 @@
 #include <stm32l053xx.h>
 #include <stdint.h>
 
-int update_threshold_value(int toast);
+int update_threshold_value(uint8_t *toast);
 void threshold_fsm(int *accel_queue_head, int *value_queue_head);
 
 // Tested output accelerometer system total = T.O.A.S.T.
 // Done: change this to accept and test an array of 3 integers. Find and return the highest value of acceleration.
-int update_threshold_value(int *toast)
+int update_threshold_value(uint8_t *toast)
 {
 	for(int i=0; i<(sizeof(toast)/sizeof(toast[0])); i++)
 	{
@@ -21,9 +21,9 @@ int update_threshold_value(int *toast)
 	
 	// Higher numbers indicate higher acceleration
   	value = (value > 0)? value: -value;
-	if(toast > 12000){ value = 3; }
-	if(toast > 8000){ value = 2; }
-	if(toast > 4000){ value = 1; }
+	if(toast > 100){ value = 3; }
+	if(toast > 50){ value = 2; }
+	if(toast > 15){ value = 1; }
 	else{ value = 0; }
   	return value;
 }
@@ -35,7 +35,7 @@ void threshold_fsm(int *accel_queue_head, int *value_queue_head)
 	volatile int threshold_state;
 	volatile int threshold_max;
 	int value = 0;
-	int data[3];
+	uint8_t int data[3];
 	
 	// TODO: get acceleration data from external queue. Assign it to data and feed to update_threshold_value()
 	// int data[3] = pop(accel_queue_head, queue_tail);?
@@ -61,13 +61,13 @@ void threshold_fsm(int *accel_queue_head, int *value_queue_head)
 		case (0) : if(value > 0){ state = 1; max = 0; }		// 
 			break;
 		case (1) : if(value > 0){ state = 2; max = value; }	//
-			if(value < 1){ state = 0; }			//
+			else{ state = 0; }			//
 			break;
-		case (2) : if(value < 1){ state = 3; }
+		case (2) : if(value < max){ state = 3; }
 			 if(max < value) {max = value;}		
 			break;
-		case (3) : if(value == 0){ state = 0; /*TODO: output max to external IPC here. (push(value_queue_head))? */   }
-			if(value > 0){ state = 2; if(max < value) {max = value;} }
+		case (3) : if(value < max){ state = 0; /*TODO: output max to external IPC here. (push(value_queue_head))? */   }
+			if(value > max){ state = 2; max = value; }
 			break;
 		default : state = 0;
 	}
