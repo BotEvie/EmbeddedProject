@@ -21,9 +21,6 @@ void init_DAC(){
 	
 	DAC->CR &= ~DAC_CR_MAMP1_Msk;
 	DAC->CR |= 4 << DAC_CR_MAMP1_Pos;           //Triangle has amplitude of 31
-
-	DAC->CR &= ~DAC_CR_BOFF1_Msk;
-	DAC->CR |= 1 << DAC_CR_BOFF1_Pos;           //Output buffer enable to avoid external op amp
 	
 	DAC->CR &= ~DAC_CR_TEN1_Msk;
 	DAC->CR |= 1 << DAC_CR_TEN1_Pos;            //Trigger enable to allow a triangle wave 
