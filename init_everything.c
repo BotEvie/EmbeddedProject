@@ -8,6 +8,8 @@ void init_all(void);
 void init_gpio(void);
 void init_DAC(void);
 void init_timer2(void);
+void init_accel(void);
+extern void spiing_w(uint16_t data);
 
 
 void init_spi()
@@ -32,6 +34,19 @@ void init_spi()
 	SPI2->CR1 |= 1 << (SPI_CR1_CPOL_Pos);
 	SPI2->CR1 |= 1 << (SPI_CR1_CPHA_Pos);
 	
+}
+
+void init_accel()
+{//setting up control registers and stuff
+	//first two registers need init before turning on
+	
+	//INC1 setting physical interupts to 0x00
+	spiing_w(0x2200);
+	//setting output data rate
+	//deadline 39 us
+	spiing_w(0x214F);
+	//turing on accelerometer
+	spiing_w(0x1BC0);
 }
 
 void init_gpio()
@@ -70,7 +85,7 @@ void init_DAC()
 }
 
 void init_timer2()
-{//timer 2 is used as the trigger for the interupt of the ADC
+{//timer 2 is used as the trigger for the interupt of the SPI read
 	//TODO: timing specifications
 }
 
