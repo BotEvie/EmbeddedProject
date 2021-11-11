@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 typedef struct {int16_t * buffer;
                 uint16_t head;
