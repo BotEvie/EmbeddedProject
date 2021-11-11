@@ -15,7 +15,7 @@ void init_queue(queue_t * ptr_to_queue, int max_items)
   ptr_to_queue ->max_index = max_items;
 }
 
-bool read_q(queue_t *q0 int16_t *data)
+bool pop(queue_t *q0 int16_t *data)
 {
   if(q0->head == q0->tail)
   { // if empty
@@ -30,7 +30,7 @@ bool read_q(queue_t *q0 int16_t *data)
     }
 }
 
-bool write_q(queue_t *q0, int16_t *data)
+bool push(queue_t *q0, int16_t *data)
 {
   uint16_t new_tail = q0->tail + 1;
   if (new_tail > q0->max_index) {new_tail = 0}; // loop back around if going past max index
