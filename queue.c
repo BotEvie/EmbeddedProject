@@ -1,4 +1,6 @@
-//
+// Not sure if this is old code from algorithms and design or example code by Dr. Carroll from embedded systems,
+// but its on my computer and looks like it should work.
+// 
 
 
 
@@ -21,18 +23,17 @@ bool read_q(queue_t *q0 int16_t *data)
       success = false; //{datum==0,success == false}
   }
   else{
-         *data = (q0->buffer)[q0->head]; // acquire data @(buffer[head])
-         q0->head++;
-         if ((q0->head) > q0->max_index) q0->head=0;
+         *data = (q0->buffer)[q0->head];  // acquire data @(buffer[head])
+         q0->head++;                      // move head to next location
+         if ((q0->head) > q0->max_index) q0->head=0;  // loop back around if exceeding max index
          success = true;
     }
-
 }
 
 bool write_q(queue_t *q0, int16_t *data)
 {
   uint16_t new_tail = q0->tail + 1;
-  if (new_tail > q0->max_index) {new_tail = 0};
+  if (new_tail > q0->max_index) {new_tail = 0}; // loop back around if going past max index
   if (new_tail == q0->head) {return false}; //queue full = error
   else{
       (q0->buffer)[q0->tail] = data;  // access as (ptr)[int] see read_q
