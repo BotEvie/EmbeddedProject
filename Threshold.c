@@ -57,10 +57,10 @@ void threshold_fsm(int *accel_queue, int *value_queue)
 	*/	
 	switch(state)
 	{
-		case (0) : if(value > 0){ state = 1; max = 0; }		// 
+		case (0) : if(value > 0){ state = 1; max = 0; }		
 			break;
-		case (1) : if(value > 0){ state = 2; max = value; }	//
-			else{ state = 0; }			//
+		case (1) : if(value > 0){ state = 2; max = value; }	
+			else{ state = 0; }			
 			break;
 		case (2) : if(value < max){ state = 3; }
 			 if(max < value) {max = value;}		
