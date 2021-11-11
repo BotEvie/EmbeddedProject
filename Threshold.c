@@ -3,11 +3,10 @@
 	
 */
 
-#include <stm32l053xx.h>
 #include <stdint.h>
 
 int update_threshold_value(uint8_t *toast);
-void threshold_fsm(int *accel_queue_head, int *value_queue_head);
+void threshold_fsm(int *accel_queue, int *value_queue);
 
 // Tested output accelerometer system total = T.O.A.S.T.
 // Done: change this to accept and test an array of 3 integers. Find and return the highest value of acceleration.
@@ -30,12 +29,12 @@ int update_threshold_value(uint8_t *toast)
 
 
 
-void threshold_fsm(int *accel_queue_head, int *value_queue_head)
+void threshold_fsm(int *accel_queue, int *value_queue)
 {
 	volatile int threshold_state;
 	volatile int threshold_max;
 	int value = 0;
-	uint8_t int data[3];
+	int data[3];
 	
 	// TODO: get acceleration data from external queue. Assign it to data and feed to update_threshold_value()
 	// int data[3] = pop(accel_queue_head, queue_tail);?
