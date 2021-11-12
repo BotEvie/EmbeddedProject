@@ -2,8 +2,6 @@
 // but its on my computer and looks like it should work.
 // 
 
-
-
 #include "queue.h"
 
 void init_queue(queue_t * ptr_to_queue, int max_items)
