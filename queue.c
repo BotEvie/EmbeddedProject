@@ -8,7 +8,7 @@
 
 void init_queue(queue_t * ptr_to_queue, int max_items)
 {
-  int16_t * new_buff = (int16_t *const) malloc((max_items+1) * sizeof(int16_t));
+  int16_t * new_buff = (int16_t *const) malloc((max_items+1) * sizeof(int16_t));  
   ptr_to_queue ->buffer = new_buff;
   ptr_to_queue ->head = 0;
   ptr_to_queue ->tail = 0;
@@ -17,13 +17,13 @@ void init_queue(queue_t * ptr_to_queue, int max_items)
 
 bool pop(queue_t *q0 int16_t *data)
 {
-  if(q0->head == q0->tail)
-  { // if empty
+  if(q0->head == q0->tail)  // if empty
+  { 
       *data = 0;
-      success = false; //{datum==0,success == false}
+      success = false; 
   }
   else{
-         *data = (q0->buffer)[q0->head];  // acquire data @(buffer[head])
+         *data = (q0->buffer)[q0->head];
          q0->head++;                      // move head to next location
          if ((q0->head) > q0->max_index) q0->head=0;  // loop back around if exceeding max index
          success = true;
@@ -36,7 +36,7 @@ bool push(queue_t *q0, int16_t *data)
   if (new_tail > q0->max_index) {new_tail = 0}; // loop back around if going past max index
   if (new_tail == q0->head) {return false}; //queue full = error
   else{
-      (q0->buffer)[q0->tail] = data;  // access as (ptr)[int] see read_q
+      (q0->buffer)[q0->tail] = data;  
       q0->tail = new_tail;
   }
     return true;
