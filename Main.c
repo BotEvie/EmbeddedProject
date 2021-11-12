@@ -5,7 +5,7 @@
 #include <stm32l053xx.h>
 #include <stdint.h>
 #include "init_everything.c"
-#include "ADC_read.c"
+#include "accel_read.c"
 
 //function calls (update as needed)
 
