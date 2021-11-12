@@ -7,7 +7,7 @@ void init_spi(void);
 void init_all(void);
 void init_gpio(void);
 void init_DAC(void);
-void init_timer2(void);
+void init_timer(void);
 void init_accel(void);
 extern void spiing_w(uint16_t data);
 
@@ -84,9 +84,18 @@ void init_DAC()
 	
 }
 
-void init_timer2()
-{//timer 2 is used as the trigger for the interupt of the SPI read
-	//TODO: timing specifications
+void init_timer()
+{ //timer 2 is used as the trigger for the interupt of the SPI read
+	
+	RCC->APB1ENR |= 1 << RCC_APB1ENR_TIM2EN_Pos;
+	// TOP = 623, 39us
+	TIM2->ARR |= 0x026F;
+	// overflow trigger for interupt only
+	TIM2->CR1 |= 1 << TIM_CR1_URS_Pos;
+	
+	
+	// start timer(s)
+	TIM2->CR1 |= 1 << TIM_CR1_CEN_Pos;
 }
 
 
@@ -99,5 +108,13 @@ void init_timer2()
 
 void init_all()
 {
+	init_gpio();
+	init_spi();
+	init_accel();
 	
+	// timer init needs to be last 
+	// once started its go time home girl
+	init_timer();
 }
+
+

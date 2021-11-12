@@ -9,9 +9,8 @@
 
 //function calls (update as needed)
 
-//TODO: ADC_read fnc and its trigger (DRU)ADC
-extern void tim2(void);
-extern void accel_read(void);
+//accelerometer read function and the trigger is a timer interupt from TIM2
+extern void x_y_z_r(void);
 //TODO: threshold_compare fnc and trigger
 extern trigger_2();
 extern void threshold_compare(void);
@@ -26,7 +25,7 @@ extern trigger_5(); //if queue is full interupt (THIS MIGHT BE HARD)
 extern void sleepytime(void);
 //TODO: init fnc's
 extern void init_all(void);
-extern void x_y_z_r(void);
+
 
 
 int main(void)
@@ -38,7 +37,7 @@ int main(void)
 	while(1)
 	{
 		
-		if(tim2()){accel_read();}
+		if(TIM_SR_UIF == 1){x_y_z_r();}
 		if(trigger_2()){threshold_compare();}   // semaphore for compare value
 		if(trigger_3()){play_sound();}          // also determines how loud
 		if(trigger_4()){change_sound();}
