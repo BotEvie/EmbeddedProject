@@ -74,15 +74,8 @@ void init_gpio()
 	GPIOB->MODER &= ~(GPIO_MODER_MODE15_Msk);
 	GPIOB->MODER |= 2u << (GPIO_MODER_MODE15_Pos);
 	
-	//PA 4 for DAC (only DAC output)(add fnc)
-	GPIOA->MODER &= ~(GPIO_MODER_MODE4_Msk);
-	//GPIOA->MODER |= 1 << GPIO_MODER_MODE4_Pos;
+	//PA 6 for tim22 PWM for sound
 	
-	GPIOA->MODER &= ~GPIO_MODER_MODE4_Msk;
- 	GPIOA->MODER |= 1 << GPIO_MODER_MODE4_Pos;
-	
-	GPIOA->MODER &= ~GPIO_MODER_MODE5_Msk;
-  	GPIOA->MODER |= 1 << GPIO_MODER_MODE5_Pos;
 	
 }
 
