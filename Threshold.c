@@ -8,13 +8,13 @@
 
 
 void update_threshold_value(uint8_t toast, uint8_t *value);
-void threshold_fsm(queue_t *accel_queue, queue_t *value_queue);
+void threshold_compare(queue_t *accel_queue, queue_t *value_queue);
 
 // Tested output accelerometer system total = T.O.A.S.T.
 
 void update_threshold_value(uint8_t toast, uint8_t *value)
 {
-	// We recieve the value from the accelerometer in two's complement so we convert it to standard notation. Simpler than casting.
+	// The recieved value is in two's complement, so we change it back to standard binary.
 	*value = ~((*value)-1);
 	// Higher numbers indicate higher acceleration, these are just random values with no real rhyme or reason
   	*value = (*value > 0)? *value: -(*value);
@@ -26,7 +26,7 @@ void update_threshold_value(uint8_t toast, uint8_t *value)
 
 
 // full state machine
-void threshold_fsm(queue_t *accel_queue, queue_t *value_queue)
+void threshold_compare(queue_t *accel_queue, queue_t *value_queue)
 {
 	static int threshold_state;	// current state
 	static int threshold_max;	// highest recorded value during a spike
