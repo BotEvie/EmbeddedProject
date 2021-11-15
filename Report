@@ -4,11 +4,13 @@ ECE 373 – Dr. Carroll
 Embedded Project Report
 
 Scope
-In Dr. Sean Carroll’s Embedded Systems class, we were tasked with using embedded design techniques to create a multi-tasking device that provided the best functionality,
-usability, reliability, performance, and supportability as well as follow JPL guidelines. To accomplish this, we created a device that used an accelerometer such that
-when the device was moved or picked up the device would generate a triangular wave which would then be heard on a speaker. More specifically, our chip would read an ADC
-value from the accelerometer and the DAC would out the triangular wave to pin PA4. The success and proper function of our device is measured by the time between the
-input and output. If the wave has the proper amplitude and frequency, the user of the device should hear the generated wave from the speaker within milliseconds. 
+In Dr. Sean Carroll’s Embedded Systems class, we were tasked with using embedded design techniques to create a multi-tasking 
+device that provided the best functionality, usability, reliability, performance, and supportability as well as follow JPL guidelines. 
+To accomplish this, we created a device that used an accelerometer such that when the device was moved or picked up the device would 
+generate a square wave which would then be heard on a speaker. More specifically, our chip would read SPI from the accelerometer which 
+would then enable pulse width modulation through TIM22 and produce a square wave to pin PA6. The success and proper function of our 
+device is measured by the time between the input and output. If the wave has the proper amplitude and frequency, the user of the device 
+should hear the generated wave from the speaker within roughly 0.7 milliseconds.
 
 Reflection
   Dru
