@@ -75,7 +75,10 @@ void init_gpio()
 	GPIOB->MODER |= 2u << (GPIO_MODER_MODE15_Pos);
 	
 	//PA 6 for tim22 PWM for sound
-	
+	GPIOA->MODER &= ~GPIO_MODER_MODE6_Msk;
+	GPIOA->MODER |= 2 << GPIO_MODER_MODE6_Pos;
+	GPIOA->AFR[0] &= ~(GPIO_AFRL_AFSEL6_Msk);
+	GPIOA->AFR[0] |= 5 << GPIO_AFRL_AFSEL6_Pos
 	
 }
 
