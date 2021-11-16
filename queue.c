@@ -42,3 +42,24 @@ bool push(queue_t *q0, uint8_t data)
     return true;
   
 }
+
+bool cq_full(queue_t *q0)
+{
+  
+    if(q0->head == q0->tail)  // if empty
+    { 
+        return false; 
+    }
+    else if((q0->head + 1) == q0->tail)
+    {
+      return true;
+    }
+}
+
+bool cq_stuff(queue_t *q0)
+{
+  if(q0->head != qo->tail)
+  {
+   return true; 
+  }
+}
