@@ -1,3 +1,7 @@
+// This state machine takes a value from the accelerometer, and converts said value to an arbitrary number depending on the range of the value.
+// It then tests the arbitrary number with reference to max to determine if we are accelerating in a similar fashion to an edge detector.
+// Once it has been decided that max acceleration has been reached, we output the max value recorded to an external queue.
+
 /*
 Copyright 2021 Erich Vernon
 
