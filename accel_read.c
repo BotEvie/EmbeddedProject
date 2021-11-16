@@ -28,7 +28,7 @@ void spiing_r(uint8_t data_out)
 	//SPI2->DR |= data_out;
 	//MISO puts data in SPI DR then to queue
 	//uint8_t data_in = ((SPI2->DR) & 0x000F); 
-	push(&q_t,data_in);
+	push(&yeet_queue,data_in);
 	//wait for SPI to finish getting data
 	//for(volatile int32_t n = 0; n < 3; n++){}
 	//while(SPI2->SR & SPI_SR_BSY){}
