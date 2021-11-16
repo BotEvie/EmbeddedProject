@@ -24,16 +24,15 @@ void init_spi()
 	//bit 6= 1, SPI on
 	//bits[5:3], 11MHz max on data transfer
 	//bit 2= 1, MOSI first will eventually change to slave
-	//bit 1= 1, CPOL
-	//bit 0= 1, CPHA
+	//bit 1= 0, CPOL rests low
+	//bit 0= 0, CPHA rising edge start
 	SPI2->CR1 |= 1 << (SPI_CR1_DFF_Pos);
-	SPI2->CR1 &= ~(7u << (SPI_CR1_BR_Pos));
+	SPI2->CR1 &= (4u << (SPI_CR1_BR_Pos));
 	SPI2->CR1 |= 1 << (SPI_CR1_SSM_Pos);
 	SPI2->CR1 |= 1 << (SPI_CR1_SSI_Pos);
 	SPI2->CR1 |= 1 << (SPI_CR1_MSTR_Pos);
 	SPI2->CR1 |= 1 << (SPI_CR1_SPE_Pos);
-	SPI2->CR1 |= 1 << (SPI_CR1_CPOL_Pos);
-	SPI2->CR1 |= 1 << (SPI_CR1_CPHA_Pos);
+	
 	
 }
 
@@ -42,7 +41,9 @@ void init_accel()
 	//first two registers need init before turning on
 	
 	//INC1 setting physical interupts to 0x00
-	spiing_w(0x2200);
+	//see if following line breaks what I want it to do
+	//spiing_w(0x2200);
+	
 	//setting output data rate
 	//deadline 39 us
 	spiing_w(0x214F);
@@ -82,28 +83,6 @@ void init_gpio()
 	
 }
 
-void init_DAC()
-{// DAC'ing to the speaker
-	RCC->APB1ENR |= RCC_APB1ENR_DACEN;   	    //Supply clock to DAC
-	
-	DAC->CR &= ~DAC_CR_WAVE1_Msk;
-	DAC->CR |= 2 << DAC_CR_WAVE1_Pos;           //Generate trinagle sound wave
-	
-	DAC->CR &= ~DAC_CR_MAMP1_Msk;
-	DAC->CR |= 9 << DAC_CR_MAMP1_Pos;           //Triangle has amplitude of 1023
-	
-	DAC->CR &= ~DAC_CR_BOFF1_Msk;
-	DAC->CR |= 1 << DAC_CR_BOFF1_Pos;           //Output buffer enable to avoid external op amp
-	
-	DAC->CR &= ~DAC_CR_TEN1_Msk;
-	DAC->CR |= 1 << DAC_CR_TEN1_Pos;            //Trigger enable to allow a triangle wave 
-	
-	DAC->CR &= ~DAC_CR_TSEL1_Msk;
-	DAC->CR |= 6 << DAC_CR_TSEL1_Pos;	    //Trigger on an timer 6
-	
-	DAC->CR &= ~DAC_CR_EN1_Msk;										
-	DAC->CR |= 1 << DAC_CR_EN1_Pos;	            //Enable DAC on channel 1
-}
 
 void init_timer()
 { //timer 2 is used as the trigger for the interupt of the SPI read
@@ -122,7 +101,8 @@ void init_timer()
 	
 	// start timer(s)
 	TIM2->CR1 |= 1 << TIM_CR1_CEN_Pos;
-	TIM6->CR1 |= 1 << TIM_CR1_CEN_Pos;
+	// turns on later for PWM
+	//TIM6->CR1 |= 1 << TIM_CR1_CEN_Pos;
 }
 
 
@@ -137,7 +117,7 @@ void init_all()
 {
 	init_gpio();
 	init_spi();
-	init_accel();
+	//init_accel();
 	
 	// timer init needs to be last 
 	// once started its go time home girl
