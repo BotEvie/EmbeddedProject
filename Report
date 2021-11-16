@@ -29,3 +29,10 @@ Debug
   
   
 Next Step
+If given more time for the project, we would implement the ability to change amplitudes and frequencies based on the speed and direction 
+the accelerometer is moved. For example, if the accelerometer was moved really fast the frequency of the sound generate would be higher or 
+if the accelerometer was moved in the x-axis direction the amplitude of the sound would be larger than the amplitude of the sound if the 
+accelerometer were to be moved in the y-axis direction. To achieve, we would have to pass different SPI values received from the accelerometer 
+that would then change the duty cycle of the pulse width modulation or the clock pre-scale divider; thus, changing the amplitude, or loudness, 
+and the frequency of the sound generated.  Implementing and changing tasks would take some time to figure out, but if given another 4-6 weeks to 
+work, this could be completed.
