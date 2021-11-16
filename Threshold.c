@@ -59,6 +59,7 @@ void threshold_compare(queue_t *accel_queue, queue_t *value_queue)
 			1: box may be accelerating, wait for another reading.
 			2: box is accelerating. Start recording values to find max.
 			3: box may have fallen below threshold. Await further input to confirm. Push max to queue if falling.
+			*4: Wait for acceleration spike to fully end. Stay here until it ends. WARNING: This has not been tested and can be removed for "tested" functionality.
 		*/	
 		switch(threshold_state)
 		{
@@ -68,10 +69,14 @@ void threshold_compare(queue_t *accel_queue, queue_t *value_queue)
 				else{ threshold_state = 0; }					// False alarm, just noise... probably.
 				break;
 			case (2) : if(value < threshold_max){ threshold_state = 3; }		// Value less than than max. Maybe falling so advance to state three.
-				 if(threshold_max < value) {threshold_max = value;}		// Max less than value. Store value as max and hold state.
+				 else if(threshold_max < value) {threshold_max = value;}		// Max less than value. Store value as max and hold state.
 				break;
-			case (3) : if(value < threshold_max){ threshold_state = 0; push(value_queue, threshold_max); threshold_max=0; }		// if value below max again spike is probably falling so push then clear max.
-				if(value > threshold_max){ threshold_state = 2; threshold_max = value; } 		// if value higher than max, spike still rising, record new value as max and retern to state 2.
+			case (3) : if(value < threshold_max){ threshold_state = 4; push(value_queue, threshold_max); threshold_max=0; }		// if value below max again spike is probably falling so push then clear max.
+				else if(value > threshold_max){ threshold_state = 2; threshold_max = value; } 		// if value higher than max, spike still rising, record new value as max and return to state 2.
+				break;
+			case (4) : if (value != 0) { threshold_state = 4; }					// We will wait for the spike to end.
+				else if (value == 0) { threshold_state = 4; threshold_max = value; }			// Maybe we stopped accelerating.	
+				else if (value == 0 && threshold_max == 0) { threshold_state = 0; }			// Yep! Stopped. Go on back to the start.
 				break;
 			default : state = 0;
 		}
