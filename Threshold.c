@@ -69,16 +69,16 @@ void threshold_compare(queue_t *accel_queue, queue_t *value_queue)
 				else{ threshold_state = 0; }					// False alarm, just noise... probably.
 				break;
 			case (2) : if(value < threshold_max){ threshold_state = 3; }		// Value less than than max. Maybe falling so advance to state three.
-				 else if(threshold_max < value) {threshold_max = value;}		// Max less than value. Store value as max and hold state.
-				break;
-			case (3) : if(value < threshold_max){ threshold_state = 4; push(value_queue, threshold_max); threshold_max=0; }		// if value below max again spike is probably falling so push then clear max.
-				else if(value > threshold_max){ threshold_state = 2; threshold_max = value; } 		// if value higher than max, spike still rising, record new value as max and return to state 2.
-				break;
-			case (4) : if (value != 0) { threshold_state = 4; }					// We will wait for the spike to end.
-				else if (value == 0) { threshold_state = 4; threshold_max = value; }			// Maybe we stopped accelerating.	
-				else if (value == 0 && threshold_max == 0) { threshold_state = 0; }			// Yep! Stopped. Go on back to the start.
-				break;
-			default : state = 0;
+    				 if(threshold_max < value) {threshold_max = value;}		// Max less than value. Store value as max and hold state.
+    				break;
+    			case (3) : if(value < threshold_max){ threshold_state = 4; threshold_max=0; }		// if value below max again spike is probably falling so push then clear max.
+    				if(value > threshold_max){ threshold_state = 2; threshold_max = value; } 		// if value higher than max, spike still rising, record new value as max and retern to state 2.
+    				break;
+    			case (4) : if (value != 0) { threshold_state = 4; }					// We will wait for the spike to end.
+				    else if (value == 0 && threshold_max !=0) { threshold_state = 4; threshold_max = value; }			// Maybe we stopped accelerating.	
+				    else if (value == 0 && threshold_max == 0) { threshold_state = 0; }			// Yep! Stopped. Go on back to the start.
+				    break;
+			default : threshold_state = 0;
 		}
 	}
 	__set_primask(interuptible);
