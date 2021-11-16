@@ -23,8 +23,10 @@ Reflection
 Debug
   Nathan
   
-  Erich
-  
+  Erich:  Test state machine by running through each possible value and checking that it goes to the next desired state properly. 
+              Also checked that out of bound statements were handled by the default case. The queue was tested by checking that it would push and pop
+              up to the desired number of objects and all stored values respectively.
+              
   Dru
   
   
