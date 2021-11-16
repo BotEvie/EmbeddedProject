@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include "init_everything.c"
 #include "accel_read.c"
+#include "playsound.c"
 
 //function calls (update as needed)
 
@@ -14,12 +15,12 @@ extern void x_y_z_r(void);
 //TODO: threshold_compare fnc and trigger
 extern trigger_2();
 extern void threshold_compare(void);
-//TODO: play_sound fnc and trigger (NATE)
+//TODO: sound_on fnc and trigger (NATE)
 extern trigger_3();
-extern void play_sound(void);
-//TODO: change_sound fnc and trigger (NATE)
+extern void sound_on(void);
+//TODO: sound_off fnc and trigger (NATE)
 extern trigger_4();
-extern void change_sound(void);
+extern void sound_off(void);
 //TODO: sleepytime fnc and trigger
 extern trigger_5(); //if queue is full interupt (THIS MIGHT BE HARD)
 extern void sleepytime(void);
@@ -39,8 +40,8 @@ int main(void)
 		
 		if(TIM_SR_UIF == 1){x_y_z_r();}
 		if(trigger_2()){threshold_compare();}   // semaphore for compare value
-		if(trigger_3()){play_sound();}          // also determines how loud
-		if(trigger_4()){change_sound();}
+		if(trigger_3()){sound_on();}          // also determines how loud
+		if(trigger_4()){sound_off();}
 		if(trigger_5()){sleepytime();}          // puts to sleep until we slowly empty the queue
 		
 	}
