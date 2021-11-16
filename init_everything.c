@@ -16,7 +16,7 @@ extern void spiing_w(uint16_t data);
 void init_spi()
 { // accelerometer uses spi or I2C and I don't really know how to use I2C
 	
-	RCC->APB2ENR |= 1 << (RCC_APB2ENR_SPI2EN_Pos);
+	RCC->APB1ENR |= 1 << (RCC_APB1ENR_SPI2EN_Pos);
 	//bit 11, 8-bit package
 	//bit 9= 1, ssm
 	//bit 8= 1, ssi
