@@ -44,7 +44,7 @@ int main(void)
 		// sleepytime only runs above 2 tasks until yeet_queue is empty
 		if(cq_stuff(&highest) == true)
 		{	uint32_t interruptible = __get_primask();
-		 	__diable_irq();
+		 	__disable_irq();
 			sound_on();		 // also determines how loud
 			sleepytime();		 // puts to sleep until we slowly empty the queue
 		 	__set_primask(interuptible);
