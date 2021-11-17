@@ -21,20 +21,25 @@ IN THE SOFTWARE.
 #include "queue.h"
 
 
-void update_threshold_value(uint8_t toast, uint8_t *value);
+void update_threshold_value(uint8_t toast[3], uint8_t *value);
 void threshold_compare(queue_t *accel_queue, queue_t *value_queue);
 
 // Tested output accelerometer system total = T.O.A.S.T.
 
-void update_threshold_value(uint8_t toast, uint8_t *value)
+void update_threshold_value(uint8_t toast[3], uint8_t *value)
 {
+	uint8_t max;
 	// The recieved value is in two's complement, so we change it back to standard binary.
-	*value = ~((*value)-1);
-	// Higher numbers indicate higher acceleration, these are just random values with no real rhyme or reason
-  	*value = (*value > 0)? *value: -(*value);
-	if(toast > 100){ *value = 3; }
-	if(toast > 50){ *value = 2; }
-	if(toast > 15){ *value = 1; }
+	for( int i = 0; i<3; i++)
+	{
+		toast[i] = ~((toast[i])-1);
+		toast[i] = (toast[i] > 0)? toast[i]: -(toast[i]);
+		if(toast[i] > max){ max = toast[i];}
+	}
+
+	if(max > 100){ *value = 3; }
+	else if(max > 50){ *value = 2; }
+	else if(max > 15){ *value = 1; }
 	else{ *value = 0; }
 }
 
@@ -45,15 +50,16 @@ void threshold_compare(queue_t *accel_queue, queue_t *value_queue)
 	static int threshold_state;	// current state
 	static int threshold_max;	// highest recorded value during a spike
 	uint8_t value = 0;
-	uint8_t data = 0;
+	uint8_t xyz[3];
 	
 	uint32_t interruptible = __get_primask();
 	__disable_irq();
 	for(int i=0; i< 3; i++)
 	{
-		pop(accel_queue, &data);
-		update_threshold_value(data, &value);
-
+		pop(accel_queue, &(xyz[i]));
+	}
+		
+	update_threshold_value(xyz, &value);
 		/* state: Motion the box is undergoing. Has 4 seperate values.
 			0: box is not accelerating.
 			1: box may be accelerating, wait for another reading.
@@ -71,16 +77,14 @@ void threshold_compare(queue_t *accel_queue, queue_t *value_queue)
 			case (2) : if(value < threshold_max){ threshold_state = 3; }		// Value less than than max. Maybe falling so advance to state three.
     				 if(threshold_max < value) {threshold_max = value;}		// Max less than value. Store value as max and hold state.
     				break;
-    			case (3) : if(value < threshold_max){ threshold_state = 4; threshold_max=0; }		// if value below max again spike is probably falling so push then clear max.
+    			case (3) : if(value < threshold_max){ threshold_state = 4; push(value_queue, threshold_max); threshold_max=0; }		// if value below max again spike is probably falling so push then clear max.
     				if(value > threshold_max){ threshold_state = 2; threshold_max = value; } 		// if value higher than max, spike still rising, record new value as max and retern to state 2.
     				break;
-    			case (4) : if (value != 0) { threshold_state = 4; }					// We will wait for the spike to end.
+    	    		case (4) : if (value != 0) { threshold_state = 4; }					// We will wait for the spike to end.
 				    else if (value == 0 && threshold_max !=0) { threshold_state = 4; threshold_max = value; }			// Maybe we stopped accelerating.	
 				    else if (value == 0 && threshold_max == 0) { threshold_state = 0; }			// Yep! Stopped. Go on back to the start.
 				    break;
 			default : threshold_state = 0;
 		}
-	}
 	__set_primask(interuptible);
 }
-
