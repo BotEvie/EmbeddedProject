@@ -22,7 +22,7 @@ IN THE SOFTWARE.
 void init_spi(void);
 void init_all(void);
 void init_gpio(void);
-void init_DAC(void);
+void init_PWM(void);
 void init_timer(void);
 void init_accel(void);
 extern void spiing_w(uint16_t data);
@@ -120,9 +120,18 @@ void init_timer()
 	//TIM6->CR1 |= 1 << TIM_CR1_CEN_Pos;
 }
 
+void init_PWM(){
+	RCC->APB2ENR |= RCC_APB2ENR_TIM22EN;
+	TIM22->PSC = 100;                                              // Prescale to make 1325 Hz
+	TIM22->ARR = 8;                                                
+	TIM22->CCR1 = 7;                                             
+	TIM22->CCMR1 |= TIM_CCMR1_OC1M_2 | TIM_CCMR1_OC1M_1
+	| TIM_CCMR1_OC1PE;
+	TIM22->CR1 |= TIM_CR1_CMS_0 | TIM_CR1_CEN;                    //CEN bit turns on the counter to start the sound
+	TIM22->EGR |= TIM_EGR_UG; 
+}
 
-
-
+		
 
 
 
@@ -132,6 +141,7 @@ void init_all()
 {
 	init_gpio();
 	init_spi();
+	init_PWM();
 	//init_accel();
 	
 	// timer init needs to be last 
