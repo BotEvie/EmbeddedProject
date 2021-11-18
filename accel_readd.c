@@ -11,27 +11,28 @@
 
 
 
-void spiing_r(int data, queue_t *q0);
+void spiing_r(uint16_t data, queue_t *q0);
 void spiing_w(uint16_t data);
-//extern bool push(queue_t *q0, uint8_t data);
+//extern bool push(queue_t *q0, uint16_t data);
 void x_y_z_r(queue_t *q0);
 
 
-void spiing_r (queue_t * q0, uint8_t data_out){				//reading the accelerometer
- 	static uint8_t n;
+void spiing_r (uint16_t data_out, queue_t * q0)
+{				//reading the accelerometer
+ 	static uint16_t n;
   	//currently fake reading
 	if (0 == n){n += 1;}
-  	else if (n > 127){ n = 0;}
+  	else if (n >= 127){ n = 0;}
 
-  	//uint8_t data_in = n & data_out;
-    	uint8_t data_in = n;
+  	//uint16_t data_in = n & data_out;
+    	uint16_t data_in = n;
 	
 	//PB12 goes low in ODR
 	//GPIOB->ODR &= ~(1u << 12);
 	//sending register location
 	//SPI2->DR |= data_out;
 	//MISO puts data in SPI DR then to queue
-	//uint8_t data_in = ((SPI2->DR) & 0x000F); 
+	//uint16_t data_in = ((SPI2->DR) & 0x000F); 
 	push(q0,data_in);
 	//wait for SPI to finish getting data
 	//for(volatile int32_t n = 0; n < 3; n++){}
@@ -40,8 +41,8 @@ void spiing_r (queue_t * q0, uint8_t data_out){				//reading the accelerometer
 	//GPIOB->ODR |= 1 << 12;
 		
 	n+=3;
-	}
 }
+
 
 
 
@@ -75,10 +76,10 @@ void x_y_z_r(queue_t *q0)
 	
 	//x axis read
 	//spiing_r(0x09);
-	spiing_r(0x12,q0);
+	spiing_r(0x00,q0);
 	//y axis read
 	//spiing_r(0x0B);
-	spiing_r(0x07,q0);
+	spiing_r(0x00,q0);
 	//z axis read
 	//spiing_r(0x0D);
 	spiing_r(0x6A,q0);

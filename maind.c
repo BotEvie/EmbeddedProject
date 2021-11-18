@@ -15,7 +15,7 @@
 #include "queued.h"
 
 
-extern void update_threshold_value(uint8_t toast, uint8_t *value);
+extern void update_threshold_value(uint16_t toast, uint16_t *value);
 extern void threshold_compare(queue_t *accel_queue, queue_t *value_queue);
 extern void spiing_r(int data, queue_t *q0);
 extern void spiing_w(uint16_t data);
@@ -39,18 +39,31 @@ void sleepytime(queue_t *q0, queue_t *q1);
 queue_t yeet_queue;
 queue_t highest;
 queue_t killer;
+queue_t n;
 
 
 void sleepytime(queue_t *q0, queue_t *q1)
-{
-	sound_off();
-	
-	while(true == cq_stuff(q0))
-	{// empty the queue
+{	push(&killer, 0x01);
+	uint16_t num;
+	pop(&n,&num);
+	if(num >= 12345u)
+	{
+		sound_off();
+		while(true == cq_stuff(q0))
+		{// empty the queue
+			if(num == 0)
+			{
+				threshold_compare(q0, q1);
+				threshold_compare(q0, q1);
+				threshold_compare(q0, q1);
 		
-		threshold_compare(q0, q1);
-		threshold_compare(q0, q1);
-		threshold_compare(q0, q1);
+				pop(&killer, 0x00);
+			}
+			num-= 2;
+			push(&n,num);
+		}
+		num++;
+		push(&n,num);
 	}
 }
 
@@ -69,15 +82,15 @@ int main(void)
 	while(1)
 	{
 		
-		if(TIM_SR_UIF == 1){x_y_z_r(&yeet_queue);}
-		if(cq_stuff(&yeet_queue)){threshold_compare(&yeet_queue, &highest);}   // semaphore for compare value
+		if((TIM_SR_UIF == 1) && !(cq_stuff(&killer))){x_y_z_r(&yeet_queue);}
+		if((cq_stuff(&yeet_queue)) && !(cq_stuff(&killer))){threshold_compare(&yeet_queue, &highest);}   // semaphore for compare value
 		// bleow tasks are sequential, but different authors
 		// after playing sound we are using sleepytime as alt. schedule
 		// sleepytime only runs above 2 tasks until yeet_queue is empty
-		if(cq_stuff(&highest) == true)
+		if(cq_stuff(&highest) | cq_stuff(&killer))
 		{	uint32_t interruptible = __get_PRIMASK();
 		 	__disable_irq();
-			sound_on();		 // also determines how loud
+			if(cq_stuff(&killer) == false){sound_on();}		 // also determines how loud
 			sleepytime(&yeet_queue, &killer);		 // puts to sleep until we slowly empty the queue
 		 	__set_PRIMASK(interruptible);
 		}           

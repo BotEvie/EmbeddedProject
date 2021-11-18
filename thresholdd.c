@@ -9,12 +9,12 @@
 #include "queued.h"
 
 
-void update_threshold_value(uint8_t toast, uint8_t *value);
+void update_threshold_value(uint16_t toast, uint16_t *value);
 void threshold_compare(queue_t *accel_queue, queue_t *value_queue);
 
 // Tested output accelerometer system total = T.O.A.S.T.
 
-void update_threshold_value(uint8_t toast, uint8_t *value)
+void update_threshold_value(uint16_t toast, uint16_t *value)
 {
 	// The recieved value is in two's complement, so we change it back to standard binary.
 	*value = ~((*value)-1);
@@ -32,8 +32,8 @@ void threshold_compare(queue_t *accel_queue, queue_t *value_queue)
 {
 	static int threshold_state;	// current state
 	static int threshold_max;	// highest recorded value during a spike
-	uint8_t value = 0;
-	uint8_t data = 0;
+	uint16_t value = 0;
+	uint16_t data = 0;
 	
 	
 	//uint32_t interruptible = __get_PRIMASK();
@@ -68,3 +68,4 @@ void threshold_compare(queue_t *accel_queue, queue_t *value_queue)
 	//__set_PRIMASK(interruptible);
 	
 }
+

@@ -25,3 +25,4 @@ void sound_off(){
 //PA6 is configured to TIM22 in init_everything task
 //These 2 functions should be called with different triggers.
 //One function enables the PWM, one disables.
+
