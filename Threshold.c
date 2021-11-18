@@ -37,9 +37,9 @@ void update_threshold_value(uint8_t toast[3], uint8_t *value)
 		if(toast[i] > max){ max = toast[i];}
 	}
 
-	if(max > 100){ *value = 3; }
-	else if(max > 50){ *value = 2; }
-	else if(max > 15){ *value = 1; }
+	if(max > 190){ *value = 3; }
+	else if(max > 125){ *value = 2; }
+	else if(max > 90){ *value = 1; }
 	else{ *value = 0; }
 }
 
@@ -77,7 +77,7 @@ void threshold_compare(queue_t *accel_queue, queue_t *value_queue)
 			case (2) : if(value < threshold_max){ threshold_state = 3; }		// Value less than than max. Maybe falling so advance to state three.
     				 if(threshold_max < value) {threshold_max = value;}		// Max less than value. Store value as max and hold state.
     				break;
-    			case (3) : if(value < threshold_max){ threshold_state = 4; push(value_queue, threshold_max); threshold_max=0; }		// if value below max again spike is probably falling so push then clear max.
+    			case (3) : if(value < threshold_max){ threshold_state = 4; push(value_queue, (uint8_t)threshold_max); threshold_max=0; }		// if value below max again spike is probably falling so push then clear max.
     				if(value > threshold_max){ threshold_state = 2; threshold_max = value; } 		// if value higher than max, spike still rising, record new value as max and retern to state 2.
     				break;
     	    		case (4) : if (value != 0) { threshold_state = 4; }					// We will wait for the spike to end.
