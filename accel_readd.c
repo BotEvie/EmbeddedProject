@@ -21,7 +21,7 @@ void spiing_r (queue_t * q0, uint8_t data_out){				//reading the accelerometer
  	static uint8_t n;
   	//currently fake reading
 	if (0 == n){n += 1;}
-  	else if (n > 250){ n = 250;}
+  	else if (n > 127){ n = 0;}
 
   	//uint8_t data_in = n & data_out;
     	uint8_t data_in = n;
