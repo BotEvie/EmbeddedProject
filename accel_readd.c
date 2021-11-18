@@ -17,16 +17,14 @@ void spiing_w(uint16_t data);
 void x_y_z_r(queue_t *q0);
 
 
-void spiing_r(int data_out, queue_t *q0)
-{//reading the accelerometer
-	uint8_t n;
-	//currently fake reading
-	if(0 == n){n+=60;}
-	else if(n == 120){n=0;}
-	
-	else{
-	
-	uint8_t data_in = n & data_out;
+void spiing_r (queue_t * q0, uint8_t data_out){				//reading the accelerometer
+ 	static uint8_t n;
+  	//currently fake reading
+	if (0 == n){n += 1;}
+  	else if (n > 250){ n = 250;}
+
+  	//uint8_t data_in = n & data_out;
+    	uint8_t data_in = n;
 	
 	//PB12 goes low in ODR
 	//GPIOB->ODR &= ~(1u << 12);
@@ -41,7 +39,7 @@ void spiing_r(int data_out, queue_t *q0)
 	//PB12 goes high in ODR
 	//GPIOB->ODR |= 1 << 12;
 		
-		n++;
+	n+=3;
 	}
 }
 
