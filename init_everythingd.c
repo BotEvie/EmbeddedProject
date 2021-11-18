@@ -7,6 +7,7 @@
 //void init_spi(void);
 void init_all(void);
 void init_gpio(void);
+void init_PWM(void);
 void init_timer(void);
 void init_accel(void);
 extern void spiing_w(uint16_t data);
