@@ -26,6 +26,7 @@ IN THE SOFTWARE.
 void sound_on(void);
 void sound_off (void);
 
+//Initialization of PWM is now contain in init_everything task as the function init_PWM
 //Functions alternate whether channel 1 for TIM22 is active or inactive
 void sound_on(){
 	TIM22->CCER |= TIM_CCER_CC1E; 
