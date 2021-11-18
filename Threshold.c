@@ -52,7 +52,7 @@ void threshold_compare(queue_t *accel_queue, queue_t *value_queue)
 	uint8_t value = 0;
 	uint8_t xyz[3];
 	
-	uint32_t interruptible = __get_primask();
+	uint32_t interruptible = __get_PRIMASK();
 	__disable_irq();
 	for(int i=0; i< 3; i++)
 	{
@@ -86,5 +86,5 @@ void threshold_compare(queue_t *accel_queue, queue_t *value_queue)
 				    break;
 			default : threshold_state = 0;
 		}
-	__set_primask(interuptible);
+	__set_PRIMASK(interruptible);
 }
