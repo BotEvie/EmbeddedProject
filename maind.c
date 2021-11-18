@@ -77,7 +77,8 @@ int main(void)
 	// queue init
 	init_queue(&yeet_queue, 30);
 	init_queue(&highest, 2);
-	init_queue(&killer, 2);
+	init_queue(&killer, 1);
+	init_queue(&n, 1);
 	
 	while(1)
 	{
