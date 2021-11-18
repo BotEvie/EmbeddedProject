@@ -27,7 +27,7 @@ void sound_on(){
 }
 
 void sound_off(){
-	TIM22->CR1 &= ~(1 << TIM_CR1_CEN);                                   //CEN bit turns off the counter to stop the sound
+	TIM22->CCER &=  ~(TIM_CCER_CC1E_Msk);                                   //CEN bit turns off the counter to stop the sound
 }
 
 //PA6 is configured to TIM22 in init_everything task
