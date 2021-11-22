@@ -31,23 +31,29 @@ void x_y_z_r(void);
 
 
 void spiing_r(uint8_t data_out)
-{//reading the accelerometer
-	//currently fake reading
-	
-	uint8_t data_in = rand & data_out;
+{	//reading the accelerometer
+ 	static uint16_t n;
+  	//currently fake reading
+	if (0 == n){n += 1;}
+  	else if (n >= 12){ n = 0;}
+
+  	//uint16_t data_in = n & data_out;
+    	uint16_t data_in = n;
 	
 	//PB12 goes low in ODR
 	//GPIOB->ODR &= ~(1u << 12);
 	//sending register location
 	//SPI2->DR |= data_out;
 	//MISO puts data in SPI DR then to queue
-	//uint8_t data_in = ((SPI2->DR) & 0x000F); 
-	push(&yeet_queue,data_in);
+	//uint16_t data_in = ((SPI2->DR) & 0x000F); 
+	push(q0,data_in);
 	//wait for SPI to finish getting data
 	//for(volatile int32_t n = 0; n < 3; n++){}
 	//while(SPI2->SR & SPI_SR_BSY){}
 	//PB12 goes high in ODR
 	//GPIOB->ODR |= 1 << 12;
+		
+	n+=1;
 }
 
 
