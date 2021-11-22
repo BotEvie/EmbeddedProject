@@ -51,20 +51,28 @@ void sleepytime(queue_t *q0, queue_t *q1)
 		sound_off();
 		while(true == cq_stuff(q0))
 		{// empty the queue
-			if(num == 0)
-			{
-				threshold_compare(q0, q1);
-				threshold_compare(q0, q1);
-				threshold_compare(q0, q1);
+			
+			if(num == 1)
+			{	uint16_t garbage;
+				pop(q0, &garbage);
+				pop(q0, &garbage);
+				pop(q0, &garbage);
+				pop(q0, &garbage);
+				pop(q0, &garbage);
+				pop(q0, &garbage);
+				pop(q0, &garbage);
+				pop(q0, &garbage);
+				pop(q0, &garbage);
 		
 				pop(&killer, 0x00);
 			}
-			num-= 2;
-			push(&n,num);
+			num--;
+			//push(&n,num);
 		}
-		num++;
-		push(&n,num);
+		pop(&n,&num);
 	}
+	num+=3;
+	push(&n,num);
 }
 
 
